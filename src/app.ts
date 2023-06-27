@@ -11,6 +11,6 @@ app.use(cookieParser());
 app.use(express.json())
 app.use('/', express.static('src/public'))
 
-await routes(app)
+routes(app)
 
 export default app

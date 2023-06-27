@@ -2,7 +2,7 @@ import infoRouter from "./infoRouter.js";
 
 const v1 = "/v1";
 
-async function routes(app) {
+function routes(app) {
   app.use(`${v1}/info`, infoRouter);
 }
 
