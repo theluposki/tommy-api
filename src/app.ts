@@ -1,10 +1,10 @@
-import express from 'express'
+import express, { Express } from 'express'
 import cors from 'cors'
 import config from './config.js'
 import cookieParser from 'cookie-parser';
-import routes from './routes/index.js'
+import routes from './presentation/routes/index.js'
 
-const app = express()
+const app:Express = express()
 
 app.use(cors(config.cors))
 app.use(cookieParser());
