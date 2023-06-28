@@ -1,6 +1,16 @@
-// src/app.ts
-import express from "express";
-import cors from "cors";
+// src/presentation/routes/infoRouter.ts
+import { Router } from "express";
+var router = Router();
+router.get("/", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+var infoRouter_default = router;
+
+// src/presentation/routes/UserRouter.ts
+import { Router as Router2 } from "express";
+
+// src/db/mariadb.ts
+import mariadb from "mariadb";
 
 // src/config.ts
 import dotenv from "dotenv";
@@ -31,23 +41,6 @@ var config = {
   mariadb: mariadbConfig
 };
 var config_default = config;
-
-// src/app.ts
-import cookieParser from "cookie-parser";
-
-// src/presentation/routes/infoRouter.ts
-import { Router } from "express";
-var router = Router();
-router.get("/", (req, res) => {
-  res.status(200).json({ status: "OK" });
-});
-var infoRouter_default = router;
-
-// src/presentation/routes/UserRouter.ts
-import { Router as Router2 } from "express";
-
-// src/db/mariadb.ts
-import mariadb from "mariadb";
 
 // src/db/createTables.ts
 import { readFile } from "fs";
@@ -209,21 +202,12 @@ var UserRouter_default = router2;
 
 // src/presentation/routes/index.ts
 var v1 = "/v1";
-function routes(app2) {
-  app2.use(`${v1}/info`, infoRouter_default);
-  app2.use(`${v1}/users`, UserRouter_default);
+function routes(app) {
+  app.use(`${v1}/info`, infoRouter_default);
+  app.use(`${v1}/users`, UserRouter_default);
 }
 var routes_default = routes;
-
-// src/app.ts
-var app = express();
-app.use(cors(config_default.cors));
-app.use(cookieParser());
-app.use(express.json());
-app.use("/", express.static("src/public"));
-routes_default(app);
-var app_default = app;
 export {
-  app_default as default
+  routes_default as default
 };
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=index.js.map

@@ -1,4 +1,4 @@
-// src/routes/infoRouter.ts
+// src/presentation/routes/infoRouter.ts
 import { Router } from "express";
 var router = Router();
 router.get("/", (req, res) => {
