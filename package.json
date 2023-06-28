@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "18"
+  },
   "scripts": {
     "start": "node --no-warnings dist/",
     "dev": "tsx watch src/",
