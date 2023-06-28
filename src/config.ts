@@ -1,9 +1,42 @@
-import dotenv from 'dotenv';
-import { readFileSync } from "node:fs";
+import dotenv from "dotenv";
+import { readFileSync } from "fs";
+import { PoolConfig } from "mariadb";
 
 dotenv.config();
 
-export default {
+interface Certificates {
+  key: Buffer;
+  cert: Buffer;
+}
+
+interface App {
+  PORT: string | number;
+  HOST?: string;
+  baseUrl?: string;
+}
+
+interface Cors {
+  origin: string;
+  credentials: boolean;
+}
+
+const mariadbConfig: PoolConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  port: Number(process.env.DB_PORT),
+  connectionLimit: 5,
+};
+
+interface Config {
+  certificates: Certificates;
+  app: App;
+  cors: Cors;
+  mariadb: PoolConfig;
+}
+
+const config: Config = {
   certificates: {
     key: readFileSync("./server.key"),
     cert: readFileSync("./server.crt"),
@@ -17,12 +50,7 @@ export default {
     origin: "https://localhost:5173",
     credentials: true,
   },
-  mariadb: {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: process.env.DB_PORT,
-    connectionLimit: 5,
-  },
+  mariadb: mariadbConfig,
 };
+
+export default config;

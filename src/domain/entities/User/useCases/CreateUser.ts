@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto'
+import { hash } from '../../../../utils/hashPassword.ts'
 
 async function createUser (email: string, password: string, confirmPassword: string, existingUser: boolean) {
 
@@ -14,7 +15,7 @@ async function createUser (email: string, password: string, confirmPassword: str
   return {
     id,
     email,
-    password,
+    password: hash(password),
   }
 }
 
