@@ -13940,7 +13940,12 @@ var compare = (password, hashPassword) => {
 };
 
 // src/domain/entities/User/useCases/CreateUser.ts
-async function createUser(email, password, confirmPassword, existingUser) {
+var createUser = ({
+  email,
+  password,
+  confirmPassword,
+  existingUser
+}) => {
   if (existingUser)
     return { error: "user already exist" };
   if (!email)
@@ -13957,7 +13962,7 @@ async function createUser(email, password, confirmPassword, existingUser) {
     email,
     password: hash(password)
   };
-}
+};
 
 // src/domain/entities/User/useCases/CreateUser.spec.js
 describe("createUser use case test suite", () => {
@@ -13966,12 +13971,12 @@ describe("createUser use case test suite", () => {
     const password = "password";
     const confirmPassword = "password";
     const existingUser = true;
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
     globalExpect(result).toEqual({ error: "user already exist" });
   });
   test("should return error if email is not provided", async () => {
@@ -13979,12 +13984,12 @@ describe("createUser use case test suite", () => {
     const password = "password";
     const confirmPassword = "password";
     const existingUser = false;
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
     globalExpect(result).toEqual({ error: "email is required" });
   });
   test("should return error if password is not provided", async () => {
@@ -13992,12 +13997,12 @@ describe("createUser use case test suite", () => {
     const password = "";
     const confirmPassword = "password";
     const existingUser = false;
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
     globalExpect(result).toEqual({ error: "password is required" });
   });
   test("should return error if confirmPassword is not provided", async () => {
@@ -14005,12 +14010,12 @@ describe("createUser use case test suite", () => {
     const password = "password";
     const confirmPassword = "";
     const existingUser = false;
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
     globalExpect(result).toEqual({ error: "confirmPassword is required" });
   });
   test("should return error if passwords do not match", async () => {
@@ -14018,12 +14023,12 @@ describe("createUser use case test suite", () => {
     const password = "password";
     const confirmPassword = "differentpassword";
     const existingUser = false;
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
     globalExpect(result).toEqual({ error: "passwords do not match" });
   });
   test("should return user object with hashed password if all requirements are met", async () => {
@@ -14031,12 +14036,12 @@ describe("createUser use case test suite", () => {
     const password = "password";
     const confirmPassword = "password";
     const existingUser = false;
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
     const isPasswordMatch = compare(password, result.password);
     globalExpect(result).toEqual({
       id: globalExpect.any(String),

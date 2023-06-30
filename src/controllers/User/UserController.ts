@@ -1,11 +1,9 @@
 import { createUserController } from "./CreateUserController.ts";
 
-interface UserInterface {
+interface IUserController {
   createUserController: Function;
 }
 
-const UserController: UserInterface = {
+export const UserController: IUserController = {
   createUserController,
 };
-
-export { UserController };

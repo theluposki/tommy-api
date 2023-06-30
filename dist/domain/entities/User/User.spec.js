@@ -13937,7 +13937,12 @@ var hash = (password) => {
 };
 
 // src/domain/entities/User/useCases/CreateUser.ts
-async function createUser(email, password, confirmPassword, existingUser) {
+var createUser = ({
+  email,
+  password,
+  confirmPassword,
+  existingUser
+}) => {
   if (existingUser)
     return { error: "user already exist" };
   if (!email)
@@ -13954,7 +13959,7 @@ async function createUser(email, password, confirmPassword, existingUser) {
     email,
     password: hash(password)
   };
-}
+};
 
 // src/domain/entities/User/User.ts
 var User = {

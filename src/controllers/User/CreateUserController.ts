@@ -1,9 +1,14 @@
-import { UserModel } from "../../models/User/UserModel.ts";
+import { UserRepository } from "../../repositories/User/UserRepository.ts";
 
-async function createUserController(email: string, password: string, confirmPassword: string): Promise<{ sucess: string } | { error: string }> {
-  const user = await UserModel.createUserModel(email, password, confirmPassword)
+import { ICreateUser } from "../../domain/entities/User/User.ts";
+
+export const createUserController = async ({
+  email,
+  password,
+  confirmPassword,
+}: ICreateUser): Promise<{ sucess: string } | { error: string }> => {
+
+  const user = await UserRepository.createUserRepository({ email, password, confirmPassword });
 
   return user;
-}
-
-export { createUserController }
+};

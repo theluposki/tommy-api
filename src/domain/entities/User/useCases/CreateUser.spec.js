@@ -9,12 +9,12 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = true;
 
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
 
     expect(result).toEqual({ error: "user already exist" });
   });
@@ -25,12 +25,12 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = false;
 
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
 
     expect(result).toEqual({ error: "email is required" });
   });
@@ -41,12 +41,12 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = false;
 
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
 
     expect(result).toEqual({ error: "password is required" });
   });
@@ -57,12 +57,12 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "";
     const existingUser = false;
 
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
 
     expect(result).toEqual({ error: "confirmPassword is required" });
   });
@@ -73,12 +73,12 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "differentpassword";
     const existingUser = false;
 
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
 
     expect(result).toEqual({ error: "passwords do not match" });
   });
@@ -89,12 +89,12 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = false;
 
-    const result = await createUser(
+    const result = await createUser({
       email,
       password,
       confirmPassword,
       existingUser
-    );
+    });
 
     const isPasswordMatch = compare(password, result.password);
 

@@ -1,11 +1,17 @@
 import { createUser } from './useCases/CreateUser.ts';
 
-interface UserInterface {
+interface IUser {
   createUser: Function;
 }
 
-const User: UserInterface = {
+export interface ICreateUser {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  existingUser: string;
+}
+
+export const User: IUser = {
   createUser,
 };
 
-export { User };

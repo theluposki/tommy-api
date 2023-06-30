@@ -38,7 +38,7 @@ var config_default = config;
 // src/app.ts
 import cookieParser from "cookie-parser";
 
-// src/presentation/routes/infoRouter.ts
+// src/routes/infoRouter.ts
 import { Router } from "express";
 var router = Router();
 router.get("/", (req, res) => {
@@ -46,7 +46,7 @@ router.get("/", (req, res) => {
 });
 var infoRouter_default = router;
 
-// src/presentation/routes/UserRouter.ts
+// src/routes/UserRouter.ts
 import { Router as Router2 } from "express";
 
 // src/db/mariadb.ts
@@ -119,7 +119,12 @@ var hash = (password) => {
 };
 
 // src/domain/entities/User/useCases/CreateUser.ts
-async function createUser(email, password, confirmPassword, existingUser) {
+var createUser = ({
+  email,
+  password,
+  confirmPassword,
+  existingUser
+}) => {
   if (existingUser)
     return { error: "user already exist" };
   if (!email)
@@ -136,15 +141,19 @@ async function createUser(email, password, confirmPassword, existingUser) {
     email,
     password: hash(password)
   };
-}
+};
 
 // src/domain/entities/User/User.ts
 var User = {
   createUser
 };
 
-// src/models/User/createUserModel.ts
-async function createUserModel(email, password, confirmPassword) {
+// src/repositories/User/createUserRepository.ts
+var createUserRepository = async ({
+  email,
+  password,
+  confirmPassword
+}) => {
   let conn;
   try {
     conn = await mariadb_default.getConnection();
@@ -152,55 +161,55 @@ async function createUserModel(email, password, confirmPassword) {
       "SELECT email FROM users WHERE email=?",
       [email]
     );
-    const user = await User.createUser(
+    const user = await User.createUser({
       email,
       password,
       confirmPassword,
-      existingUser.length > 0
-    );
-    console.log(user);
+      existingUser: existingUser.length > 0
+    });
     if (user.error)
       return user;
     const query1 = "INSERT INTO users (id, email, password) VALUES (?,?,?);";
     const row = await conn.query(query1, [user.id, user.email, user.password]);
     if (row.affectedRows === 1)
-      return { success: "Usu\xE1rio registrado com sucesso!" };
+      return { success: "User successfully registered!" };
+    return { error: "Unable to register user!" };
   } catch (error) {
-    return { error: "Ocorreu um erro na cria\xE7\xE3o de usu\xE1rio" };
+    return { error: "An error occurred while creating a user" };
   } finally {
     if (conn) {
       conn.release();
     }
   }
-}
+};
 
-// src/models/User/UserModel.ts
-var UserModel = {
-  createUserModel
+// src/repositories/User/UserRepository.ts
+var UserRepository = {
+  createUserRepository
 };
 
 // src/controllers/User/CreateUserController.ts
-async function createUserController(email, password, confirmPassword) {
-  const user = await UserModel.createUserModel(email, password, confirmPassword);
+var createUserController = async ({
+  email,
+  password,
+  confirmPassword
+}) => {
+  const user = await UserRepository.createUserRepository({ email, password, confirmPassword });
   return user;
-}
+};
 
 // src/controllers/User/UserController.ts
 var UserController = {
   createUserController
 };
 
-// src/presentation/routes/UserRouter.ts
+// src/routes/UserRouter.ts
 var router2 = Router2();
 router2.post(
   "/",
   async (req, res) => {
     const { email, password, confirmPassword } = req.body;
-    const result = await UserController.createUserController(
-      email,
-      password,
-      confirmPassword
-    );
+    const result = await UserController.createUserController({ email, password, confirmPassword });
     if (result.error) {
       res.status(400).json({ error: result.error });
       return;
@@ -210,7 +219,7 @@ router2.post(
 );
 var UserRouter_default = router2;
 
-// src/presentation/routes/index.ts
+// src/routes/index.ts
 var v1 = "/v1";
 function routes(app2) {
   app2.use(`${v1}/info`, infoRouter_default);

@@ -2,7 +2,7 @@ import express, { Express } from 'express'
 import cors from 'cors'
 import config from './config.js'
 import cookieParser from 'cookie-parser';
-import routes from './presentation/routes/index.js'
+import routes from './routes/index.ts'
 
 const app:Express = express()
 
