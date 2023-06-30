@@ -15,6 +15,7 @@ var mariadbConfig = {
   connectionLimit: 5
 };
 var config = {
+  production: process.env.PRODUCTION,
   certificates: {
     key: readFileSync("./server.key"),
     cert: readFileSync("./server.crt")

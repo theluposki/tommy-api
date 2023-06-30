@@ -18,6 +18,7 @@ var mariadbConfig = {
   connectionLimit: 5
 };
 var config = {
+  production: process.env.PRODUCTION,
   certificates: {
     key: readFileSync("./server.key"),
     cert: readFileSync("./server.crt")
@@ -237,7 +238,8 @@ routes_default(app);
 var app_default = app;
 
 // src/index.ts
-var server = https.createServer(config_default.certificates, app_default);
+var options = process.env.PRODUCTION === "true" ? {} : config_default.certificates;
+var server = https.createServer(options, app_default);
 server.listen(config_default.app.PORT, () => {
   console.log(`[ APP ] Listening at \u{1F680}${config_default.app.HOST}:${config_default.app.PORT}`);
 });

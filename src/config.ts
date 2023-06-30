@@ -30,6 +30,7 @@ const mariadbConfig: PoolConfig = {
 };
 
 interface Config {
+  production: string | undefined;
   certificates: Certificates;
   app: App;
   cors: Cors;
@@ -37,6 +38,7 @@ interface Config {
 }
 
 const config: Config = {
+  production: process.env.PRODUCTION,
   certificates: {
     key: readFileSync("./server.key"),
     cert: readFileSync("./server.crt"),
