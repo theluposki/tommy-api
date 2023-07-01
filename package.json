@@ -34,6 +34,7 @@
     "@types/mysql": "^2.15.21",
     "@types/node": "^20.3.2",
     "@types/supertest": "^2.0.12",
+    "standard": "^17.1.0",
     "supertest": "^6.3.3",
     "tsup": "^7.1.0",
     "tsx": "^3.12.7",
