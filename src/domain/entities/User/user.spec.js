@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { User } from "./User.ts";
+import { User } from "./user.ts";
 
 describe("testing the user entity", () => {
   test("User should be an object", () => {

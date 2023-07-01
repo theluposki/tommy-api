@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { createUser } from "./CreateUser.ts";
+import { createUser } from "./createUser.ts";
 import { compare } from "../../../../utils/hashPassword.ts";
 
 describe("createUser use case test suite", () => {
@@ -9,7 +9,7 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = true;
 
-    const result = await createUser({
+    const result = createUser({
       email,
       password,
       confirmPassword,
@@ -25,7 +25,7 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = false;
 
-    const result = await createUser({
+    const result = createUser({
       email,
       password,
       confirmPassword,
@@ -41,7 +41,7 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = false;
 
-    const result = await createUser({
+    const result = createUser({
       email,
       password,
       confirmPassword,
@@ -57,7 +57,7 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "";
     const existingUser = false;
 
-    const result = await createUser({
+    const result = createUser({
       email,
       password,
       confirmPassword,
@@ -73,7 +73,7 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "differentpassword";
     const existingUser = false;
 
-    const result = await createUser({
+    const result = createUser({
       email,
       password,
       confirmPassword,
@@ -89,7 +89,7 @@ describe("createUser use case test suite", () => {
     const confirmPassword = "password";
     const existingUser = false;
 
-    const result = await createUser({
+    const result = createUser({
       email,
       password,
       confirmPassword,

@@ -1,4 +1,4 @@
-import { createUser } from './useCases/CreateUser.ts';
+import { createUser } from './useCases/createUser.js';
 
 interface IUser {
   createUser: Function;

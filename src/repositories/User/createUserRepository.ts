@@ -1,7 +1,7 @@
 import db from "../../db/mariadb.js";
-import { User } from "../../domain/entities/User/User.js";
+import { User } from "../../domain/entities/User/user.ts";
 
-import { ICreateUser } from "../../domain/entities/User/User.ts";
+import { ICreateUser } from "../../domain/entities/User/user.ts";
 
 export const createUserRepository = async ({
   email,

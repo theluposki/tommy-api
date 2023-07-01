@@ -1,6 +1,6 @@
-import { UserRepository } from "../../repositories/User/UserRepository.ts";
+import { UserRepository } from "../../repositories/User/userRepository.ts";
 
-import { ICreateUser } from "../../domain/entities/User/User.ts";
+import { ICreateUser } from "../../domain/entities/User/user.ts";
 
 export const createUserController = async ({
   email,

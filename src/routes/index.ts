@@ -1,6 +1,6 @@
 import { Express } from "express";
 import infoRouter from "./infoRouter.js";
-import UserRouter from "./UserRouter.ts"
+import UserRouter from "./userRouter.ts"
 
 const v1 = "/v1";
 

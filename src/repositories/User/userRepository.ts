@@ -1,4 +1,4 @@
-import { createUserRepository } from './createUserRepository.ts'
+import { createUserRepository } from './createUserRepository.js'
 
 interface IUserRepository {
   createUserRepository: Function;

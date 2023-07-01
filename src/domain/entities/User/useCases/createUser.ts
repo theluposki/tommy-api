@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
-import { hash } from "../../../../utils/hashPassword.ts";
+import { hash } from "../../../../utils/hashPassword.js";
 
-import { ICreateUser } from "../User.ts";
+import { ICreateUser } from "../user.ts";
 
 export const createUser = ({
   email,

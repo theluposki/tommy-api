@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
-import { UserController } from "../controllers/User/UserController.ts";
+import { UserController } from "../controllers/User/UserController.js";
 
 const router = Router();
 
-import { ICreateUser } from "../domain/entities/User/User.ts";
+import { ICreateUser } from "../domain/entities/User/user.js";
 
 router.post("/", async (req: Request<{}, {}, ICreateUser>,res: Response): Promise<void> => {
     const { email, password, confirmPassword } = req.body;
