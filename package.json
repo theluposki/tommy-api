@@ -34,6 +34,7 @@
     "@types/mysql": "^2.15.21",
     "@types/node": "^20.3.2",
     "@types/supertest": "^2.0.12",
+    "lint-staged": "^13.2.3",
     "standard": "^17.1.0",
     "supertest": "^6.3.3",
     "tsup": "^7.1.0",
