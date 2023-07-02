@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { createUser } from "./createUser.ts";
-import { compare } from "../../../../utils/hashPassword.ts";
+import { compare } from "../../../utils/hashPassword.ts";
 
 describe("createUser use case test suite", () => {
   test("should return error if user already exists", async () => {

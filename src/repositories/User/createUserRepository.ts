@@ -1,7 +1,5 @@
 import db from "../../db/mariadb.js";
-import { User } from "../../domain/entities/User/user.ts";
-
-import { ICreateUser } from "../../domain/entities/User/user.ts";
+import { User, ICreateUser } from "../../entities/User/user.ts";
 
 export const createUserRepository = async ({
   email,
@@ -32,7 +30,7 @@ export const createUserRepository = async ({
     const row = await conn.query(query1, [user.id, user.email, user.password]);
 
     if (row.affectedRows === 1)
-      return { success: "User successfully registered!" };
+      return { sucess: "User successfully registered!", id: user.id };
 
     return { error: "Unable to register user!" };
   } catch (error) {

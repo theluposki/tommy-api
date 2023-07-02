@@ -87,7 +87,7 @@ pool.getConnection().then((conn) => {
 await createTables(pool);
 var mariadb_default = pool;
 
-// src/domain/entities/User/useCases/CreateUser.ts
+// src/entities/User/useCases/createUser.ts
 import { randomUUID } from "crypto";
 
 // src/utils/hashPassword.ts
@@ -98,7 +98,7 @@ var hash = (password) => {
   return hashPassword;
 };
 
-// src/domain/entities/User/useCases/CreateUser.ts
+// src/entities/User/useCases/createUser.ts
 var createUser = ({
   email,
   password,
@@ -123,9 +123,38 @@ var createUser = ({
   };
 };
 
-// src/domain/entities/User/User.ts
+// src/entities/User/useCases/deleteUser.ts
+var deleteUser = ({
+  id,
+  existingUser
+}) => {
+  if (!id)
+    return { error: "id is required!" };
+  if (!existingUser)
+    return { error: "User not found!" };
+  return {
+    id,
+    existingUser
+  };
+};
+
+// src/entities/User/useCases/authUser.ts
+var authUser = ({ email, password }) => {
+  if (!email)
+    return { error: "email is required" };
+  if (!password)
+    return { error: "password is required" };
+  return {
+    email,
+    password
+  };
+};
+
+// src/entities/User/user.ts
 var User = {
-  createUser
+  createUser,
+  deleteUser,
+  authUser
 };
 
 // src/repositories/User/createUserRepository.ts
@@ -152,7 +181,7 @@ var createUserRepository = async ({
     const query1 = "INSERT INTO users (id, email, password) VALUES (?,?,?);";
     const row = await conn.query(query1, [user.id, user.email, user.password]);
     if (row.affectedRows === 1)
-      return { success: "User successfully registered!" };
+      return { sucess: "User successfully registered!", id: user.id };
     return { error: "Unable to register user!" };
   } catch (error) {
     return { error: "An error occurred while creating a user" };

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { hash } from "../../../../utils/hashPassword.js";
+import { hash } from "../../../utils/hashPassword.ts";
 
 import { ICreateUser } from "../user.ts";
 

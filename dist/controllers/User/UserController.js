@@ -87,7 +87,7 @@ pool.getConnection().then((conn) => {
 await createTables(pool);
 var mariadb_default = pool;
 
-// src/domain/entities/User/useCases/CreateUser.ts
+// src/entities/User/useCases/createUser.ts
 import { randomUUID } from "crypto";
 
 // src/utils/hashPassword.ts
@@ -97,8 +97,11 @@ var hash = (password) => {
   const hashPassword = bcrypt.hashSync(password, salt);
   return hashPassword;
 };
+var compare = (password, hashPassword) => {
+  return bcrypt.compareSync(password, hashPassword);
+};
 
-// src/domain/entities/User/useCases/CreateUser.ts
+// src/entities/User/useCases/createUser.ts
 var createUser = ({
   email,
   password,
@@ -123,9 +126,38 @@ var createUser = ({
   };
 };
 
-// src/domain/entities/User/User.ts
+// src/entities/User/useCases/deleteUser.ts
+var deleteUser = ({
+  id,
+  existingUser
+}) => {
+  if (!id)
+    return { error: "id is required!" };
+  if (!existingUser)
+    return { error: "User not found!" };
+  return {
+    id,
+    existingUser
+  };
+};
+
+// src/entities/User/useCases/authUser.ts
+var authUser = ({ email, password }) => {
+  if (!email)
+    return { error: "email is required" };
+  if (!password)
+    return { error: "password is required" };
+  return {
+    email,
+    password
+  };
+};
+
+// src/entities/User/user.ts
 var User = {
-  createUser
+  createUser,
+  deleteUser,
+  authUser
 };
 
 // src/repositories/User/createUserRepository.ts
@@ -152,7 +184,7 @@ var createUserRepository = async ({
     const query1 = "INSERT INTO users (id, email, password) VALUES (?,?,?);";
     const row = await conn.query(query1, [user.id, user.email, user.password]);
     if (row.affectedRows === 1)
-      return { success: "User successfully registered!" };
+      return { sucess: "User successfully registered!", id: user.id };
     return { error: "Unable to register user!" };
   } catch (error) {
     return { error: "An error occurred while creating a user" };
@@ -163,12 +195,104 @@ var createUserRepository = async ({
   }
 };
 
-// src/repositories/User/UserRepository.ts
-var UserRepository = {
-  createUserRepository
+// src/repositories/User/deleteUserRepository.ts
+var deleteUserRepository = async ({
+  id
+}) => {
+  let conn;
+  try {
+    conn = await mariadb_default.getConnection();
+    const existingUser = await conn.query(
+      "SELECT email FROM users WHERE id=?",
+      [id]
+    );
+    const user = await User.deleteUser({
+      id,
+      existingUser: existingUser.length > 0
+    });
+    if (user.error)
+      return user;
+    const query = "DELETE FROM users WHERE id=?";
+    const row = await conn.query(query, [user.id]);
+    if (row.affectedRows === 1)
+      return { sucess: "User deleted successfully!" };
+    return { error: "Unable to delete user!" };
+  } catch (error) {
+    return { error: "An error occurred while deleting the user" };
+  } finally {
+    if (conn) {
+      conn.release();
+    }
+  }
 };
 
-// src/controllers/User/CreateUserController.ts
+// src/utils/jwt.ts
+import { readFileSync as readFileSync2 } from "fs";
+import jwt from "jsonwebtoken";
+var privateKey = readFileSync2("./server.key");
+var sign = (userId) => {
+  const tokenPayload = {
+    id: userId,
+    exp: Math.floor(Date.now() / 1e3) + 60 * 60
+    // 1 hour
+  };
+  return jwt.sign(
+    tokenPayload,
+    privateKey.toString(),
+    // Convert privateKey to string
+    { algorithm: "RS256" }
+  );
+};
+
+// src/repositories/User/authUserRepository.ts
+var authUserRepository = async ({
+  email,
+  password
+}) => {
+  let conn;
+  const user = await User.authUser({
+    email,
+    password
+  });
+  try {
+    conn = await mariadb_default.getConnection();
+    const existingUser = await conn.query("SELECT * FROM users WHERE email=?", [
+      email
+    ]);
+    if (!existingUser[0].email)
+      return { error: "Invalid email or password" };
+    if (!compare(user.password, existingUser[0].password))
+      return { error: "Invalid email or password" };
+    if (user.error)
+      return user;
+    const token = sign(existingUser[0].id);
+    return {
+      user: {
+        id: existingUser[0].id,
+        email: existingUser[0].email,
+        created_at: existingUser[0].created_at,
+        updated_at: existingUser[0].updated_at
+      },
+      sucess: "Autenticado com sucesso!",
+      token
+    };
+  } catch (error) {
+    return { error: "An error occurred while authenticating the user" };
+  } finally {
+    if (conn) {
+      conn.release();
+    }
+  }
+};
+
+// src/repositories/User/userRepository.ts
+var UserRepository = {
+  createUserRepository,
+  deleteUserRepository,
+  authUserRepository
+};
+
+// src/controllers/User/createUserController.ts
 var createUserController = async ({
   email,
   password,
@@ -178,9 +302,28 @@ var createUserController = async ({
   return user;
 };
 
+// src/controllers/User/deleteUserController.ts
+var deleteUserController = async ({
+  id
+}) => {
+  const user = await UserRepository.deleteUserRepository({ id });
+  return user;
+};
+
+// src/controllers/User/authUserController.ts
+var authUserController = async ({
+  email,
+  password
+}) => {
+  const user = await UserRepository.authUserRepository({ email, password });
+  return user;
+};
+
 // src/controllers/User/UserController.ts
 var UserController = {
-  createUserController
+  createUserController,
+  deleteUserController,
+  authUserController
 };
 export {
   UserController
