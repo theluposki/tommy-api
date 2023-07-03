@@ -1,7 +1,8 @@
 import { readFileSync } from "node:fs";
-import jwt from "jsonwebtoken";
+import jwt, { VerifyOptions } from "jsonwebtoken";
 
 const privateKey: Buffer = readFileSync("./server.key");
+const publicKey: Buffer = readFileSync('server.key');
 
 interface TokenPayload {
   id: string;
@@ -19,4 +20,12 @@ export const sign = (userId: string): string => {
     privateKey.toString(), // Convert privateKey to string
     { algorithm: "RS256" }
   );
+};
+
+export const verify = (token: string): string | object => {
+  const options: VerifyOptions = {
+    algorithms: ['RS256'],
+  };
+
+  return jwt.verify(token, publicKey.toString(), options);
 };

@@ -12,8 +12,9 @@ export interface ICreateProfile {
   id: string;
   nickname: string;
   bio: string;
-  picture: string
-  links: string[]
+  picture: string;
+  links: string;
+  reqUserId: string
 }
 
 export interface IMyProfile {
