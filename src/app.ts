@@ -11,6 +11,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(errorHandlerJSON);
 app.use("/", express.static("src/public"));
+app.use("/default", express.static("src/default"));
+
 
 routes(app);
 
