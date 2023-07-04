@@ -112,6 +112,6 @@ describe("createProfile use case test suite", () => {
       reqUserId
     });
 
-    expect(result.links).toEqual(["link.com", "mylink.com"]);
+    expect(result.links).toEqual(JSON.stringify(["link.com", "mylink.com"]));
   });
 });

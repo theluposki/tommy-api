@@ -16,8 +16,6 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
   const userId: string = (req.user as { id: string }).id;
 
-  console.log(userId)
-
   const result = await ProfileController.createProfileController({
     nickname,
     bio,

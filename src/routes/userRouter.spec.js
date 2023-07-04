@@ -84,7 +84,7 @@ describe("[ Auth ] testing E2E the user/auth router", () => {
   // Se usuário ja existir
   test("should return an error if the user with that email doesn't exist", async () => {
     const res = await request(app).post("/v1/users/auth").send({
-      email: "user2@mail.com",
+      email: "user4@mail.com",
       password: "123456",
     });
 

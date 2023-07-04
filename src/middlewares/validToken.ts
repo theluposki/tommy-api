@@ -21,14 +21,12 @@ export const validateToken: RequestHandler = async (
       // Verificar se o token JWT é válido e decodificar o payload
       const decoded: any = verify(token);
 
-      // Verificar se o token expirou
       const now: number = Date.now().valueOf() / 1000;
       if (decoded.exp < now) {
         res.status(401).json({ error: 'Authentication failed: token expired' });
         return;
       }
 
-      // Atribuir o tipo correto a req.user
       const authenticatedReq = req as AuthenticatedRequest;
       authenticatedReq.user = {
         id: decoded.id,

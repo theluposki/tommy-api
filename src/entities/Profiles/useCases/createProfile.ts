@@ -16,8 +16,8 @@ export const createProfile = ({
 
   if(!bio) bio = "Write your biography. 💻"
   if(!picture) picture = "/default/avatar.png"
-  if(!links) links = JSON.stringify(["link.com", "mylink.com"])
   if(links) links = JSON.stringify(links)
+  if(!links) links = JSON.stringify(["link.com", "mylink.com"])
 
   return {
     id,

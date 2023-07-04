@@ -19,6 +19,8 @@ export const createProfileRepository = async ({
       reqUserId,
     });
 
+    if(profile.error) return profile
+
     conn = await db.getConnection();
 
     const profileAlreadyExists = await conn.query("SELECT * FROM user_profiles WHERE user_id=?",
@@ -43,8 +45,6 @@ export const createProfileRepository = async ({
         profile.links
       ]
     );
-
-    console.log("row: ", row)
 
     if (row.affectedRows === 1)
       return { sucess: "Profile successfully added!", id: profile.id };
