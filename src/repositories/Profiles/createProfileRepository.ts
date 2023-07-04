@@ -19,15 +19,17 @@ export const createProfileRepository = async ({
       reqUserId,
     });
 
-    if(profile.error) return profile
+    if (profile.error) return profile;
 
     conn = await db.getConnection();
 
-    const profileAlreadyExists = await conn.query("SELECT * FROM user_profiles WHERE user_id=?",
-      [ profile.reqUserId]
+    const profileAlreadyExists = await conn.query(
+      "SELECT * FROM user_profiles WHERE user_id=?",
+      [profile.reqUserId]
     );
 
-    if(profileAlreadyExists.length > 0) return { error: "you already have a profile" }
+    if (profileAlreadyExists.length > 0)
+      return { error: "you already have a profile" };
 
     const row = await conn.query(
       `
@@ -42,7 +44,7 @@ export const createProfileRepository = async ({
         profile.nickname,
         profile.bio,
         profile.picture,
-        profile.links
+        profile.links,
       ]
     );
 

@@ -7,14 +7,14 @@ describe("createProfile use case test suite", () => {
     const bio = "";
     const picture = "";
     const links = "";
-    const reqUserId = "64182729-4405-4ef2-9cad-61ebc0b91f40"
+    const reqUserId = "64182729-4405-4ef2-9cad-61ebc0b91f40";
 
     const result = createProfile({
       nickname,
       bio,
       picture,
       links,
-      reqUserId
+      reqUserId,
     });
 
     expect(result.hasOwnProperty("nickname")).toBeTruthy();
@@ -29,14 +29,14 @@ describe("createProfile use case test suite", () => {
     const bio = "";
     const picture = "";
     const links = "";
-    const reqUserId = ""
+    const reqUserId = "";
 
     const result = createProfile({
       nickname,
       bio,
       picture,
       links,
-      reqUserId
+      reqUserId,
     });
 
     expect(result).toEqual({ error: "nickname is required" });
@@ -47,14 +47,14 @@ describe("createProfile use case test suite", () => {
     const bio = "";
     const picture = "";
     const links = "";
-    const reqUserId = ""
+    const reqUserId = "";
 
     const result = createProfile({
       nickname,
       bio,
       picture,
       links,
-      reqUserId
+      reqUserId,
     });
 
     expect(result).toEqual({ error: "reqUserId is required" });
@@ -65,14 +65,14 @@ describe("createProfile use case test suite", () => {
     const bio = "";
     const picture = "";
     const links = "";
-    const reqUserId = "64182729-4405-4ef2-9cad-61ebc0b91f40"
+    const reqUserId = "64182729-4405-4ef2-9cad-61ebc0b91f40";
 
     const result = createProfile({
       nickname,
       bio,
       picture,
       links,
-      reqUserId
+      reqUserId,
     });
 
     expect(result.bio).toEqual("Write your biography. 💻");
@@ -83,15 +83,14 @@ describe("createProfile use case test suite", () => {
     const bio = "";
     const picture = "";
     const links = "";
-    const reqUserId = "64182729-4405-4ef2-9cad-61ebc0b91f40"
-
+    const reqUserId = "64182729-4405-4ef2-9cad-61ebc0b91f40";
 
     const result = createProfile({
       nickname,
       bio,
       picture,
       links,
-      reqUserId
+      reqUserId,
     });
 
     expect(result.picture).toEqual("/default/avatar.png");
@@ -109,7 +108,7 @@ describe("createProfile use case test suite", () => {
       bio,
       picture,
       links,
-      reqUserId
+      reqUserId,
     });
 
     expect(result.links).toEqual(JSON.stringify(["link.com", "mylink.com"]));

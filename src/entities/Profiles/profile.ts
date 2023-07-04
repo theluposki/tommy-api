@@ -18,7 +18,7 @@ export interface ICreateProfile {
 }
 
 export interface IMyProfile {
-  reqId: string
+  reqUserId: string
 }
 
 export interface IFindProfileByNickname {

@@ -13,6 +13,7 @@ describe("[ Create USER ] testing E2E the user router", () => {
       confirmPassword: "123456",
     });
 
+    expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body).toEqual({ error: "email is required" });
   });
@@ -25,6 +26,7 @@ describe("[ Create USER ] testing E2E the user router", () => {
       confirmPassword: "123456",
     });
 
+    expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body).toEqual({ error: "password is required" });
   });
@@ -37,6 +39,7 @@ describe("[ Create USER ] testing E2E the user router", () => {
       confirmPassword: "",
     });
 
+    expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body).toEqual({ error: "confirmPassword is required" });
   });
@@ -49,6 +52,7 @@ describe("[ Create USER ] testing E2E the user router", () => {
       confirmPassword: "123456",
     });
 
+    expect(res.status).toEqual(201);
     expect(res.body).toHaveProperty("sucess");
     expect(res.body).toHaveProperty("id");
     expect(res.body.sucess).toEqual("User successfully registered!");
@@ -64,6 +68,7 @@ describe("[ Create USER ] testing E2E the user router", () => {
       confirmPassword: "123456",
     });
 
+    expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body).toEqual({ error: "user already exist" });
   });
@@ -77,6 +82,7 @@ describe("[ Auth ] testing E2E the user/auth router", () => {
       password: "123456",
     });
 
+    expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body).toEqual({ error: "email is required" });
   });
@@ -88,6 +94,7 @@ describe("[ Auth ] testing E2E the user/auth router", () => {
       password: "123456",
     });
 
+    expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body).toEqual({ error: "Invalid email or password" });
   });
@@ -99,6 +106,7 @@ describe("[ Auth ] testing E2E the user/auth router", () => {
       password: "",
     });
 
+    expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body).toEqual({ error: "password is required" });
   });
@@ -109,6 +117,7 @@ describe("[ Auth ] testing E2E the user/auth router", () => {
       password: "123456",
     });
 
+    expect(res.status).toEqual(200);
     expect(res.body).toHaveProperty("sucess");
     expect(res.body).toHaveProperty("token");
     expect(res.body.sucess).toEqual("Autenticado com sucesso!");

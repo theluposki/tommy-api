@@ -40,14 +40,21 @@ router.post(
       return;
     }
 
-    res.cookie('token', result.token, { httpOnly: true, secure: true, sameSite: 'none' });
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     res.status(200).json(result);
   }
 );
 
 router.delete(
   "/:id",
-  async (req: Request<{ id: string }, {}, {}, ICreateUser>, res: Response): Promise<void> => {
+  async (
+    req: Request<{ id: string }, {}, {}, ICreateUser>,
+    res: Response
+  ): Promise<void> => {
     const id: string = req.params.id;
 
     const result = await UserController.deleteUserController({ id });
