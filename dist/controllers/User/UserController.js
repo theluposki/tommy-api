@@ -230,6 +230,7 @@ var deleteUserRepository = async ({
 import { readFileSync as readFileSync2 } from "fs";
 import jwt from "jsonwebtoken";
 var privateKey = readFileSync2("./server.key");
+var publicKey = readFileSync2("server.key");
 var sign = (userId) => {
   const tokenPayload = {
     id: userId,
@@ -250,16 +251,18 @@ var authUserRepository = async ({
   password
 }) => {
   let conn;
-  const user = await User.authUser({
-    email,
-    password
-  });
   try {
+    const user = User.authUser({
+      email,
+      password
+    });
+    if (user.error)
+      return user;
     conn = await mariadb_default.getConnection();
     const existingUser = await conn.query("SELECT * FROM users WHERE email=?", [
-      email
+      user.email
     ]);
-    if (!existingUser[0].email)
+    if (existingUser.length === 0)
       return { error: "Invalid email or password" };
     if (!compare(user.password, existingUser[0].password))
       return { error: "Invalid email or password" };
@@ -267,12 +270,6 @@ var authUserRepository = async ({
       return user;
     const token = sign(existingUser[0].id);
     return {
-      user: {
-        id: existingUser[0].id,
-        email: existingUser[0].email,
-        created_at: existingUser[0].created_at,
-        updated_at: existingUser[0].updated_at
-      },
       sucess: "Autenticado com sucesso!",
       token
     };

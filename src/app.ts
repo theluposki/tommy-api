@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(errorHandlerJSON);
 app.use("/", express.static("src/public"));
 app.use("/default", express.static("src/default"));
-
+app.use("/uploads", express.static("src/uploads"));
 
 routes(app);
 

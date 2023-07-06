@@ -1,11 +1,13 @@
 import { createProfile } from "./useCases/createProfile.ts"; 
 import { myProfile } from "./useCases/myProfile.ts";
 import { findProfilesByNickname } from "./useCases/findProfilesByNickname.ts";
+import { uploadImageProfile } from "./useCases/uploadImageProfile.ts";
 
 interface IProfile {
   createProfile: Function;
   myProfile: Function;
   findProfilesByNickname: Function;
+  uploadImageProfile: Function;
 }
 
 export interface ICreateProfile {
@@ -29,5 +31,6 @@ export interface IFindProfileByNickname {
 export const Profile: IProfile = {
   createProfile,
   myProfile,
-  findProfilesByNickname
+  findProfilesByNickname,
+  uploadImageProfile
 };
