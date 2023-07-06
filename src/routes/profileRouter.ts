@@ -47,4 +47,21 @@ router.get("/myprofile", async (req: Request, res: Response): Promise<void> => {
   res.status(200).json(result);
 });
 
+
+router.post("/find", async (req: Request, res: Response): Promise<void> => {
+  const userId: string = (req.user as { id: string }).id;
+
+  const result = await ProfileController.findProfilesByNicknameController({
+    reqUserId: userId,
+    nickname: req.body.nickname
+  });
+
+  if (result.error) {
+    res.status(400).json({ error: result.error });
+    return;
+  }
+
+  res.status(200).json(result);
+});
+
 export default router;

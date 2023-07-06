@@ -22,7 +22,7 @@ export interface IMyProfile {
 }
 
 export interface IFindProfileByNickname {
-  reqId: string;
+  reqUserId: string;
   nickname: string;
 }
 

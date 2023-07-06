@@ -136,4 +136,51 @@ describe("[ Create PROFILE ] testing E2E the profiles router", () => {
     expect(res2.body.sucess).toHaveProperty("created_at");
     expect(res2.body.sucess).toHaveProperty("updated_at");
   });
+
+  test("should not return your profile if you are not authenticatedshould not return fetch if you are not authenticated", async () => {
+    const res = await request(app).post("/v1/profiles/find");
+
+    expect(res.status).toEqual(401);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body).toEqual({
+      error: "Authentication failed: token cookie missing",
+    });
+  });
+
+  test("if no profile is found it should return an empty array", async () => {
+    const res = await request(app)
+      .post("/v1/profiles/find")
+      .set("Cookie", `token=${token}`)
+      .send({ nickname: "m" });
+
+    expect(res.status).toEqual(200);
+    expect(res.body).toEqual([]);
+  });
+
+  test("should return an array of profiles", async () => {
+    const res = await request(app)
+      .post("/v1/profiles")
+      .set("Cookie", `token=${token}`)
+      .send({
+        nickname: "Jon Doe",
+        bio: "",
+        picture: "",
+        links: "",
+      });
+
+    expect(res.body).toHaveProperty("id");
+    expect(res.body).toHaveProperty("sucess");
+    expect(res.body.sucess).toEqual("Profile successfully added!");
+
+    const res2 = await request(app)
+      .post("/v1/profiles/find")
+      .set("Cookie", `token=${token}`)
+      .send({ nickname: "J" });
+
+    expect(res2.status).toEqual(200);
+    expect(res2.body).toHaveProperty("sucess");
+    expect(res2.body.sucess).toHaveProperty("id");
+    expect(res2.body.sucess).toHaveProperty("nickname");
+    expect(res2.body.sucess).toHaveProperty("picture");
+  });
 });

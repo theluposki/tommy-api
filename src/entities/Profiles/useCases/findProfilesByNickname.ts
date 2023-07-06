@@ -1,14 +1,14 @@
 import { IFindProfileByNickname } from "../profile.ts";
 
 export const findProfilesByNickname = ({
-  reqId,
+  reqUserId,
   nickname
 }: IFindProfileByNickname): object => {
-  if (!reqId) return { error: "reqId is required" };
+  if (!reqUserId) return { error: "reqUserId is required" };
   if (!nickname) return { error: "nickname is required" };
 
   return {
-    reqId,
+    reqUserId,
     nickname
   };
 };
