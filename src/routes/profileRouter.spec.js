@@ -151,7 +151,7 @@ describe("[ Create PROFILE ] testing E2E the profiles router", () => {
     const res = await request(app)
       .post("/v1/profiles/find")
       .set("Cookie", `token=${token}`)
-      .send({ nickname: "m" });
+      .send({ nickname: "z" });
 
     expect(res.status).toEqual(200);
     expect(res.body).toEqual([]);

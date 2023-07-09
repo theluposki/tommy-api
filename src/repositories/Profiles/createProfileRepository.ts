@@ -31,6 +31,14 @@ export const createProfileRepository = async ({
     if (profileAlreadyExists.length > 0)
       return { error: "you already have a profile" };
 
+    const nicknameIsAlreadyInUse = await conn.query(
+      "SELECT * FROM user_profiles WHERE nickname=?",
+      [profile.nickname]
+    );
+
+    if (nicknameIsAlreadyInUse.length > 0)
+      return { error: "username is already in use" };
+
     const row = await conn.query(
       `
 	    INSERT INTO user_profiles
@@ -48,8 +56,9 @@ export const createProfileRepository = async ({
       ]
     );
 
-    if (row.affectedRows === 1)
+    if (row.affectedRows === 1) {
       return { sucess: "Profile successfully added!", id: profile.id };
+    }
 
     return { error: "Unable to register user!" };
   } catch (error) {

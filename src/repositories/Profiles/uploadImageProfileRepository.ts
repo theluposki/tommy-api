@@ -26,9 +26,13 @@ export const uploadImageProfileRepository = async ({
       [profile.reqUserId]
     );
 
-    const filenames = JSON.parse(oldImage[0].picture).map(
-      (item: any) => `src/uploads/${item.filename}`
-    );
+    let filenames;
+
+    if (oldImage[0].picture !== "/default/avatar.png") {
+      filenames = JSON.parse(oldImage[0].picture).map(
+        (item: any) => `src/uploads/${item.filename}`
+      );
+    }
 
     const row = await conn.query(
       `UPDATE user_profiles
@@ -38,14 +42,14 @@ export const uploadImageProfileRepository = async ({
     );
 
     if (row.affectedRows === 1) {
-      for (const item of filenames) {
-        await unlinkAsync(item);
+      if (filenames) {
+        for (const item of filenames) {
+          await unlinkAsync(item);
+        }
       }
 
       return { sucess: "photo updated successfully!", id: profile.id };
     }
-
-    return { error: "unable to update photo!" };
   } catch (error) {
     return { error: "unable to update photo" };
   } finally {
